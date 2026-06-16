@@ -1,7 +1,7 @@
 import { formatNumber, formatPct, splitLabel } from "../data/normalize.js";
+import { API_BASE } from "../services/api.js";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
-const API_BASE = window.WHISTLERATE_API_BASE || "http://127.0.0.1:8000";
 
 let scatterData = null;
 let scatterRequest = null;

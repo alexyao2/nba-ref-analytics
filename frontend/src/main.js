@@ -163,9 +163,16 @@ function bindControls() {
 }
 
 async function init() {
-  await loadApiFilters();
   bindNavigation(render);
   bindControls();
+
+  try {
+    await loadApiFilters();
+  } catch (error) {
+    console.error(error);
+    populateFiltersFromApi([], [], el);
+    el.recordCount.textContent = "Backend unavailable";
+  }
 
   const hashPage = {
     "#intro": "intro-page",

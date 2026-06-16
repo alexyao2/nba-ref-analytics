@@ -25,6 +25,7 @@ app.add_middleware(
         "http://127.0.0.1:4173",
         "http://127.0.0.1:4174",
         "http://127.0.0.1:4175",
+        "http://98.81.239.149:3000",
     ],
     allow_methods=["GET"],
     allow_headers=["*"],
