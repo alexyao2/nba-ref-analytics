@@ -1,4 +1,4 @@
-const API_BASE = window.WHISTLERATE_API_BASE || "http://127.0.0.1:8000";
+const API_BASE = window.WHISTLERATE_API_BASE || "http://98.81.239.149:8000";
 
 export async function fetchJson(path, params = {}) {
   const query = new URLSearchParams(params);
