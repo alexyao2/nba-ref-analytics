@@ -33,13 +33,11 @@ jobs:
         working-directory: backend
         run: pytest -q
 
-      - name: Validate frontend JavaScript
+      - name: Build frontend
+        working-directory: frontend
         run: |
-          node --check frontend/src/main.js
-          node --check frontend/src/services/api.js
-          node --check frontend/src/ui/renderConclusions.js
-          node --check frontend/src/ui/renderMetrics.js
-          node --check frontend/src/ui/renderTables.js
+          npm ci
+          npm run build
 
       - name: Validate Docker Compose config
         run: docker compose config

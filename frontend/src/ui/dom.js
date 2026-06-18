@@ -24,5 +24,8 @@ export const el = {
   conclusionPlotCount: document.querySelector("#conclusionPlotCount"),
   conclusionScatter: document.querySelector("#conclusionScatter"),
   profileTooltip: document.querySelector("#profileTooltip"),
-  selectedProfile: document.querySelector("#selectedProfile")
+  selectedProfile: document.querySelector("#selectedProfile"),
+  videoConstellation: document.querySelector("#videoConstellation"),
+  selectedCall: document.querySelector("#selectedCall"),
+  callCount: document.querySelector("#callCount")
 };

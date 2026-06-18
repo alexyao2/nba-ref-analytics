@@ -1,4 +1,5 @@
 import { parseCsv } from "./data/csv.js";
+import { controversialCalls } from "./data/controversialCalls.js";
 import {
   getFoulDifferentialLeaders,
   getOverviewMetrics,
@@ -21,6 +22,7 @@ import {
   renderWatchlistFromApi,
 } from "./ui/renderMetrics.js";
 import { renderGameCards, renderRefTable } from "./ui/renderTables.js";
+import { initVideoConstellation } from "./ui/videoConstellation.js";
 
 let renderRequestId = 0;
 
@@ -163,6 +165,7 @@ function bindControls() {
 }
 
 async function init() {
+  initVideoConstellation(el, controversialCalls);
   bindNavigation(render);
   bindControls();
 
