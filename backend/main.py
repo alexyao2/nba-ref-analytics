@@ -98,11 +98,12 @@ def get_home_bias_index(
 
 @app.get("/api/metrics/conclusions/scatter")
 def get_conclusion_scatter_profiles(
+    season: str | None = None,
     split: str = "regular_season",
     min_games: int = 40,
     limit: int = 120,
 ):
-    rows = filter_rows(load_csv_rows(), split=split, min_games=min_games)
+    rows = filter_rows(load_csv_rows(), season=season, split=split, min_games=min_games)
     return conclusion_scatter_profiles(rows, limit)
 
 

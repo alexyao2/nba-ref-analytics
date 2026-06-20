@@ -8,25 +8,37 @@ export default function VideoConstellation() {
 
   useEffect(() => {
     videoRefs.current.forEach((video) => {
-      video.muted = true;
-      video.play().catch(() => {});
+      playMuted(video);
     });
   }, []);
+
+  function playMuted(video) {
+    video.muted = true;
+    video.play().catch(() => {});
+  }
 
   function activateCall(call) {
     setSelectedCall(call);
     setActiveCallId(call.id);
     videoRefs.current.forEach((video, id) => {
-      video.muted = id !== call.id;
-      video.play().catch(() => {});
+      if (id !== call.id) {
+        playMuted(video);
+        return;
+      }
+
+      video.muted = false;
+      video.play().catch(() => {
+        // Hover is not always considered an audio gesture, especially in Safari.
+        // Preserve the visual preview when the browser blocks unmuted playback.
+        playMuted(video);
+      });
     });
   }
 
   function deactivateCall() {
     setActiveCallId("");
     videoRefs.current.forEach((video) => {
-      video.muted = true;
-      video.play().catch(() => {});
+      playMuted(video);
     });
   }
 

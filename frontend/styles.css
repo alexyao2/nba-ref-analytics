@@ -1187,7 +1187,8 @@ tbody tr:hover {
   display: grid;
   grid-template-columns: minmax(360px, 0.9fr) minmax(0, 1.35fr);
   gap: 22px;
-  padding: 44px max(22px, calc((100vw - var(--max)) / 2));
+  min-height: calc(100dvh - 74px);
+  padding: 44px max(22px, calc((100vw - var(--max)) / 2)) 96px;
 }
 
 .conclusions-copy,
@@ -1285,6 +1286,37 @@ tbody tr:hover {
   padding: 18px;
 }
 
+.scatter-controls {
+  display: flex;
+  align-items: end;
+  justify-content: end;
+  gap: 10px;
+}
+
+.scatter-controls label {
+  display: grid;
+  gap: 4px;
+}
+
+.scatter-controls label span {
+  color: var(--muted);
+  font-size: 0.66rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.scatter-controls select {
+  min-height: 32px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #ffffff;
+  color: var(--ink);
+  padding: 0 26px 0 9px;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
 .scatter-svg-wrap {
   position: relative;
   aspect-ratio: 960 / 560;
@@ -1352,6 +1384,14 @@ tbody tr:hover {
   fill: var(--rust);
 }
 
+.label-mixed-home {
+  fill: var(--blue);
+}
+
+.label-mixed-road {
+  fill: var(--amber);
+}
+
 .scatter-dot {
   cursor: pointer;
   opacity: 0.74;
@@ -1410,7 +1450,7 @@ tbody tr:hover {
 
 .profile-tooltip {
   position: absolute;
-  z-index: 5;
+  z-index: 20;
   display: none;
   width: min(248px, calc(100% - 24px));
   border: 1px solid rgba(31, 36, 29, 0.16);
@@ -1489,6 +1529,53 @@ tbody tr:hover {
   color: var(--muted);
   font-size: 0.88rem;
   line-height: 1.5;
+}
+
+.findings-section {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+  margin-bottom: -122px;
+}
+
+.findings-heading {
+  display: grid;
+  gap: 6px;
+}
+
+.findings-heading h2 {
+  max-width: 680px;
+  font-size: clamp(1.55rem, 2.6vw, 2.25rem);
+}
+
+.findings-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.findings-grid article {
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f7faf8;
+  padding: 16px;
+}
+
+.findings-grid span {
+  color: var(--green-dark);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.findings-grid p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
 }
 
 .insight-panel {
@@ -1845,6 +1932,15 @@ tbody tr:hover {
 
   .call-lab-header {
     display: grid;
+  }
+
+  .scatter-panel .panel-header {
+    display: grid;
+    gap: 12px;
+  }
+
+  .scatter-controls {
+    justify-content: space-between;
   }
 
   .video-constellation {

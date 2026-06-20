@@ -150,6 +150,8 @@ export default function DashboardPage() {
     minGames: 1
   }), [records, filters]);
 
+  const workloadGroups = useMemo(() => aggregateByReferee(displayRecords, true), [displayRecords]);
+
   const groups = useMemo(() => {
     const grouped = aggregateByReferee(displayRecords, sortMode !== "games_asc");
 
@@ -169,7 +171,7 @@ export default function DashboardPage() {
       <section className="subpage-hero glossy-subpage">
         <div>
           <p className="eyebrow">Data dashboard</p>
-          <h1>Explore NBAstuffer referee stats.</h1>
+          <h1>Explore NBA referee stats.</h1>
         </div>
         <div className="top-actions">
           <button id="resetData" type="button" onClick={() => setFilters(defaultFilters)}>Reset</button>
@@ -208,7 +210,7 @@ export default function DashboardPage() {
 
             <div className="control-group">
               <label htmlFor="minGames">Min games</label>
-              <input id="minGames" type="range" min="1" max="82" value={filters.minGames} onChange={(event) => setFilters({ ...filters, minGames: Number(event.target.value) })} />
+              <input id="minGames" type="range" min="1" max="72" value={filters.minGames} onChange={(event) => setFilters({ ...filters, minGames: Number(event.target.value) })} />
               <output>{filters.minGames}</output>
             </div>
 
@@ -244,7 +246,7 @@ export default function DashboardPage() {
                       </div>
                       <span className="pill">{overview ? `${overview.total_rows} rows · ${seasonCount} seasons` : error || "Loading backend data"}</span>
                     </div>
-                    <WorkloadChart groups={groups} />
+                    <WorkloadChart groups={workloadGroups} />
                   </section>
 
                   <section className="panel glass-panel">
@@ -329,6 +331,7 @@ export default function DashboardPage() {
                       <div><dt>Seasons</dt><dd>2016-17 regular season through 2025-26, plus the public 2017 playoffs page.</dd></div>
                       <div><dt>Rows</dt><dd>Each row represents a referee, season/split, and role combination from the source tables.</dd></div>
                       <div><dt>Limitations</dt><dd>This source does not include no-call audits, coach challenge outcomes, or media records.</dd></div>
+                      <div><dt>Future data</dt><dd>Additional seasons and data points may be added as they become publicly available.</dd></div>
                     </dl>
                   </section>
 
@@ -345,7 +348,6 @@ export default function DashboardPage() {
                     <dl className="definitions">
                       <div><dt>Home Win Rate</dt><dd>Percentage of games won by the home team in rows matching the current filters.</dd></div>
                       <div><dt>Foul Differential</dt><dd>NBAstuffer&apos;s road-team foul percentage minus home-team foul percentage expression.</dd></div>
-                      <div><dt>Balance Score</dt><dd>A local display helper used only to color foul-differential cards, not a source metric.</dd></div>
                     </dl>
                   </section>
 

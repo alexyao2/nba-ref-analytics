@@ -9,9 +9,9 @@ export default function HomePage({ onNavigate }) {
         <div className="evidence-backdrop" aria-hidden="true"></div>
         <div className="evidence-copy">
           <p className="eyebrow">Is the NBA rigged?</p>
-          <h1>Reading into Referee performance by the numbers.</h1>
+          <h1>A look into NBA Referee performance by the numbers.</h1>
           <p className="hero-lede">
-            WhistleRate connects controversial call examples with referee-season metrics so public data can be explored like a film room, not just a spreadsheet.
+            WhistleRate is project exploring NBA referee performance by analyzing foul differentials and foul frequency per referee to uncover insights about officiating trends and potential biases.
           </p>
           <div className="hero-actions">
             <button className="primary-action" type="button" onClick={() => onNavigate("data")}>Explore the data</button>
@@ -21,12 +21,12 @@ export default function HomePage({ onNavigate }) {
             <article className="liquid-card">
               <span>Dataset</span>
               <strong>2016-26</strong>
-              <small>Referee-season rows</small>
+              <small>All referee stats</small>
             </article>
             <article className="liquid-card">
               <span>Signal</span>
               <strong>Foul diff.</strong>
-              <small>Road minus home profile</small>
+              <small>Road & Home team plus/minus</small>
             </article>
             <article className="liquid-card">
               <span>Next layer</span>
@@ -53,11 +53,11 @@ export default function HomePage({ onNavigate }) {
           </article>
           <article>
             <strong>Data Collection</strong>
-            <p>The data used for this analysis includes foul differentials, experience, and called fouls per game aggregated from nbastuffer.com.</p>
+            <p>The data used for this analysis includes foul differentials, experience, and called fouls per game aggregated from nbastuffer.com and public media sources.</p>
           </article>
           <article>
-            <strong>Conclusions</strong>
-            <p>Leaves space for your next expansion, such as film review, source libraries, team impact, or editorial research.</p>
+            <strong>Conclusion</strong>
+            <p>Conclusions are drawn through statistical analysis of the collected data, revealing patterns and insights about the state of the NBA and its level of officiating fairness.</p>
           </article>
         </div>
       </section>
