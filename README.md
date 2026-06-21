@@ -126,16 +126,3 @@ GET /api/metrics/consistency
 ## Data
 
 The data aggregated and used in this project is sourced from NBAstuffer.com. The stored CSV data is located in `data/raw/`. The backend reads this CSV and calculates derived metrics via service functions. The frontend treats the backend API as the source of truth for referee rows, filters, summary metrics, and conclusion graph data.
-
-## Methodology
-
-This project currently uses descriptive statistics, weighted averages, standard deviation, and z-scores to identify officiating patterns.
-
-Current metrics include:
-
-- Foul Differential: compares fouls called against road teams versus home teams.
-- Home Bias Index: combines home win percentage, home point differential, and foul differential into a weighted score.
-- Outlier Analysis: identifies referee-season rows that differ meaningfully from the population average.
-- Consistency Analysis: compares a referee’s variation across seasons against the overall population baseline.
-
-Note: These metrics are exploratory and should be interpreted cautiously. The metrics are calculated from public data, but interpretation remains exploratory. These results can highlight unusual patterns or trends, but they do not independently prove intent, bias, or causation.
