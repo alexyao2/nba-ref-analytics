@@ -21,8 +21,8 @@ nba-ref-analytics/
   frontend/
     index.html
     styles.css
+    assets/
     src/
-    data/
   backend/
     main.py
     data/
@@ -42,17 +42,21 @@ cd nba-ref-analytics
 
 ## Frontend
 
-The frontend is a static website that calls the FastAPI backend for dashboard data and calculated metrics:
+The React/Vite frontend calls the FastAPI backend for dashboard data and calculated metrics:
 
 ```bash
 cd frontend
-python3 -m http.server 3000
+npm install
+npm run dev
 ```
 
-Then open:
+Then open one of these routes:
 
 ```txt
-http://localhost:3000
+http://localhost:3000/#intro         Intro page
+http://localhost:3000/#data          Data dashboard
+http://localhost:3000/#future        Conclusions page
+http://localhost:3000/#conclusions   Conclusions page alias
 ```
 
 ## Backend
@@ -76,6 +80,7 @@ Which will be available at:
 
 ```txt
 http://127.0.0.1:8000
+http://127.0.0.1:8000/docs
 ```
 
 ## Docker
@@ -86,17 +91,21 @@ Run the frontend and backend together:
 docker compose up --build
 ```
 
-The frontend will be available at:
+The combined site is available through Nginx at:
 
 ```txt
-http://localhost:3000
+http://localhost/
+http://localhost/#data
+http://localhost/#future
 ```
 
-The backend API will be available at:
+Nginx proxies backend requests under `/api`, so the health check is available at:
 
 ```txt
-http://localhost:8000
+http://localhost/api/health
 ```
+
+For local debugging, the directly exposed services remain available at `http://localhost:3000` (frontend) and `http://localhost:8000` (backend).
 
 ## API Endpoints
 
