@@ -168,7 +168,7 @@ export default function DashboardPage() {
 
   return (
     <section id="data-page" className="site-page active" aria-label="Data dashboard page">
-      <section className="subpage-hero glossy-subpage">
+      <section className="subpage-hero">
         <div>
           <p className="eyebrow">Data dashboard</p>
           <h1>Explore NBA referee stats.</h1>

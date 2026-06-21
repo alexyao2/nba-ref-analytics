@@ -31,6 +31,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+def filtered_csv_rows(season=None, split=None, min_games=None):
+    return filter_rows(load_csv_rows(), season, split, min_games)
+
+
 @app.get("/api/health")
 def health_check():
     return {"status": "ok"}
@@ -42,17 +47,15 @@ def get_referees(
     split: str | None = None,
     min_games: int | None = None,
 ):
-    return filter_rows(load_csv_rows(), season, split, min_games)
+    return filtered_csv_rows(season, split, min_games)
 
 @app.get("/api/seasons")
 def get_available_seasons():
-    rows = load_csv_rows()
-    return {"seasons": get_seasons(rows)}
+    return {"seasons": get_seasons(load_csv_rows())}
 
 @app.get("/api/splits")
 def get_available_splits():
-    rows = load_csv_rows()
-    return {"splits": get_splits(rows)}
+    return {"splits": get_splits(load_csv_rows())}
 
 
 @app.get("/api/metrics/overview")
@@ -61,8 +64,7 @@ def get_overview_metrics(
     split: str | None = None,
     min_games: int | None = None,
 ):
-    rows = filter_rows(load_csv_rows(), season, split, min_games)
-    return build_overview_metrics(rows)
+    return build_overview_metrics(filtered_csv_rows(season, split, min_games))
 
 @app.get("/api/metrics/foul-differential")
 def get_foul_differential(
@@ -70,8 +72,7 @@ def get_foul_differential(
     split: str | None = None,
     min_games: int | None = None,
 ):
-    rows = filter_rows(load_csv_rows(), season, split, min_games)
-    return {"foul_differential": foul_differential(rows)}
+    return {"foul_differential": foul_differential(filtered_csv_rows(season, split, min_games))}
 
 
 @app.get("/api/metrics/foul-differential/leaders")
@@ -81,8 +82,7 @@ def get_foul_differential_leaders(
     min_games: int | None = None,
     limit: int = 10,
 ):
-    rows = filter_rows(load_csv_rows(), season, split, min_games)
-    return {"leaders": foul_differential_leaders(rows, limit)}
+    return {"leaders": foul_differential_leaders(filtered_csv_rows(season, split, min_games), limit)}
 
 
 @app.get("/api/metrics/home-bias")
@@ -92,8 +92,7 @@ def get_home_bias_index(
     min_games: int | None = None,
     limit: int = 10,
 ):
-    rows = filter_rows(load_csv_rows(), season, split, min_games)
-    return home_bias_index(rows, limit)
+    return home_bias_index(filtered_csv_rows(season, split, min_games), limit)
 
 
 @app.get("/api/metrics/conclusions/scatter")
@@ -103,8 +102,7 @@ def get_conclusion_scatter_profiles(
     min_games: int = 40,
     limit: int = 120,
 ):
-    rows = filter_rows(load_csv_rows(), season=season, split=split, min_games=min_games)
-    return conclusion_scatter_profiles(rows, limit)
+    return conclusion_scatter_profiles(filtered_csv_rows(season, split, min_games), limit)
 
 
 @app.get("/api/metrics/outliers")
@@ -116,12 +114,11 @@ def get_outlier_analysis(
     threshold: float = 2.0,
     limit: int = 20,
 ):
-    rows = filter_rows(load_csv_rows(), season, split, min_games)
     try:
         return {
             "field": field,
             "threshold": threshold,
-            "outliers": outlier_analysis(rows, field, threshold, limit),
+            "outliers": outlier_analysis(filtered_csv_rows(season, split, min_games), field, threshold, limit),
         }
     except ValueError as error:
         raise HTTPException(status_code=400, detail=str(error))
@@ -135,11 +132,10 @@ def get_consistency_analysis(
     min_games: int | None = None,
     limit: int = 20,
 ):
-    rows = filter_rows(load_csv_rows(), season, split, min_games)
     try:
         return {
             "field": field,
-            "results": consistency_analysis(rows, field, limit),
+            "results": consistency_analysis(filtered_csv_rows(season, split, min_games), field, limit),
         }
     except ValueError as error:
         raise HTTPException(status_code=400, detail=str(error))

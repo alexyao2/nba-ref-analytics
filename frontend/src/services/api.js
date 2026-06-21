@@ -1,3 +1,5 @@
+import { toNumber } from "../data/normalize.js";
+
 export const API_BASE = window.WHISTLERATE_API_BASE || "";
 
 export async function fetchJson(path, params = {}) {
@@ -64,10 +66,4 @@ export function normalizeApiReferee(row) {
     sourceUpdatedNote: row.source_updated_note || "",
     sourceUrl: row.source_url || "",
   };
-}
-
-function toNumber(value) {
-  if (value === undefined || value === null || value === "") return null;
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : null;
 }

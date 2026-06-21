@@ -61,14 +61,6 @@ export default function HomePage({ onNavigate }) {
           </article>
         </div>
       </section>
-
-      {/* Previous single-video hero preserved conceptually:
-        <figure className="hero-media">
-          <video width="640" height="360" autoPlay loop muted playsInline>
-            <source src="./assets/introvideo.mp4" type="video/mp4" />
-          </video>
-        </figure>
-      */}
     </section>
   );
 }

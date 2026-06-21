@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./components/Header.jsx";
 import HomePage from "./components/HomePage.jsx";
 import DashboardPage from "./components/DashboardPage.jsx";
@@ -36,15 +36,13 @@ export default function App() {
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
 
-  const currentPage = useMemo(() => page, [page]);
-
   return (
     <>
-      <Header currentPage={currentPage} onNavigate={setPage} />
+      <Header currentPage={page} onNavigate={setPage} />
       <main>
-        {currentPage === "intro" && <HomePage onNavigate={setPage} />}
-        {currentPage === "data" && <DashboardPage />}
-        {currentPage === "future" && <ConclusionsPage />}
+        {page === "intro" && <HomePage onNavigate={setPage} />}
+        {page === "data" && <DashboardPage />}
+        {page === "future" && <ConclusionsPage />}
       </main>
     </>
   );

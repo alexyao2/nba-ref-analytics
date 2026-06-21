@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { API_BASE, getSeasons } from "../services/api.js";
 import { formatNumber, formatPct, splitLabel } from "../data/normalize.js";
+import logoVideo from "../../assets/logovideo.mp4";
+import logoPoster from "../../assets/nba-logo-design.jpg";
 
 function quadrantFor(profile) {
   if (profile.x >= 0 && profile.y >= 0) return "home";
@@ -259,8 +261,8 @@ export default function ConclusionsPage() {
           </div>
 
           <ProfileCard profile={selectedProfile} />
-            <video muted autoPlay loop playsInline preload="metadata" width="450" height="290" poster="/assets/nba-logo-design.jpg">
-              <source src="/assets/logovideo.mp4" type="video/mp4"/>
+            <video muted autoPlay loop playsInline preload="metadata" width="450" height="290" poster={logoPoster}>
+              <source src={logoVideo} type="video/mp4"/>
             </video>
 
         </div>
