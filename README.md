@@ -1,115 +1,106 @@
 # NBA Ref Analytics
 
-NBA Ref Analytics is an informational data project that explores NBA referee trends across seasons using publicly available referee statistics. The project analyzes officiating patterns such as foul differential, home-team indicators, referee consistency, and statistical outliers.
+[![Live demo](https://img.shields.io/badge/live-demo-0f766e?style=for-the-badge)](http://98.81.239.149)
+[![Backend tests](https://github.com/alexyao2/nba-ref-analytics/actions/workflows/backend-tests.yml/badge.svg)](https://github.com/alexyao2/nba-ref-analytics/actions/workflows/backend-tests.yml)
 
-The goal is to make referee data easier to explore and to surface patterns that may be worth deeper analysis. The results should be interpreted as statistical indicators, not proof of referee bias or game manipulation.
+**[View the live demo →](http://98.81.239.149)**
+
+NBA Ref Analytics ("WhistleRate") is a full-stack data application for exploring NBA referee trends across seasons. It examines foul differential, home-team indicators, referee consistency, and statistical outliers using publicly available referee statistics.
+
+> **Important:** The results are statistical indicators for further review—not evidence of referee bias, game manipulation, or intent.
+
+| Intro and film-review context | Interactive data dashboard |
+| --- | --- |
+| ![WhistleRate introduction page](docs/screenshots/intro.png) | ![WhistleRate data dashboard](docs/screenshots/dashboard.png) |
+
+| Referee-profile conclusions |
+| --- |
+| ![WhistleRate conclusions page](docs/screenshots/conclusions.png) |
+
+## What I built
+
+- A **React + Vite** single-page interface with an evidence-board introduction, filterable dashboard, charts, referee records, and an interactive conclusion view.
+- A **FastAPI** backend that owns CSV parsing, filtering, aggregation, and metric calculation—keeping the frontend focused on presentation.
+- A reproducible **Docker Compose** environment with separate frontend and backend services, plus **Nginx** routing API requests under `/api`.
+- Backend unit tests for referee filtering and analytical metric services, run in GitHub Actions before deployment.
+- A small data pipeline that converts the stored NBA referee-statistics CSV into API responses for overview metrics, foul-differential leaders, outlier analysis, consistency analysis, and a home-bias index.
+
+## Engineering decisions
+
+| Decision | Why it matters |
+| --- | --- |
+| Backend as the source of truth | Derived statistics are calculated once in FastAPI instead of being reimplemented inconsistently in the browser. |
+| Service-layer analytics | Metric and filtering logic is isolated from HTTP routes, making it directly testable and easier to extend. |
+| Docker + Nginx | The app can be started consistently as a multi-service stack, while Nginx exposes one browser-facing origin and proxies `/api` requests. |
+| Transparent interpretation | The interface and documentation frame results as signals for deeper, game-level analysis rather than claims of bias. |
 
 ## Features
 
-- Browse NBA referee statistics across multiple seasons
-- Filter referee data by season, split, and minimum games officiated
-- Analyze foul differential between home and road teams
-- Calculate a home bias index using multiple weighted indicators
-- Identify statistical outliers using z-scores
+- Browse referee statistics across 2016–26 seasons
+- Filter by season, split, minimum games officiated, and referee name
+- Compare foul differential between home and road teams
+- Calculate a home-bias index using weighted indicators
+- Identify statistical outliers with z-scores
 - Compare referee consistency across seasons
-- Display results through an informational frontend and FastAPI backend
+- Review selected controversial-call clips alongside aggregate results
 
-## Project Structure
+## Architecture
 
-```txt
+```text
+React / Vite frontend
+        │  fetch /api/*
+        ▼
+Nginx reverse proxy ───► FastAPI backend ───► CSV data + analytics services
+                              │
+                              └── tests for filters and metrics
+```
+
+## Project structure
+
+```text
 nba-ref-analytics/
-  frontend/
-    index.html
-    styles.css
-    assets/
-    src/
-  backend/
-    main.py
-    data/
-    services/
-    requirements.txt
-  data/
-    raw/
+├── frontend/          # React/Vite UI and visual assets
+├── backend/           # FastAPI routes, services, and tests
+├── data/raw/          # Source CSV used by the backend
+├── nginx/             # Reverse-proxy configuration
+└── docker-compose.yml # Local multi-service setup
 ```
 
-## Installation
+## Run locally
 
-Clone the repository:
+### Docker (recommended)
+
 ```bash
-git clone <repo-url>
+git clone https://github.com/alexyao2/nba-ref-analytics.git
 cd nba-ref-analytics
+docker compose up --build
 ```
 
-## Frontend
+Open [http://localhost/](http://localhost/) after the containers start. Nginx routes backend endpoints under `/api`; the health check is available at [http://localhost/api/health](http://localhost/api/health).
 
-The React/Vite frontend calls the FastAPI backend for dashboard data and calculated metrics:
+### Run services separately
 
 ```bash
+# Terminal 1: backend
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8000
+```
+
+```bash
+# Terminal 2: frontend
 cd frontend
 npm install
 npm run dev
 ```
 
-Then open one of these routes:
+The Vite frontend runs at `http://localhost:3000`; FastAPI docs are available at `http://127.0.0.1:8000/docs`.
 
-```txt
-http://localhost:3000/#intro         Intro page
-http://localhost:3000/#data          Data dashboard
-http://localhost:3000/#future        Conclusions page
-http://localhost:3000/#conclusions   Conclusions page alias
-```
+## API endpoints
 
-## Backend
-
-Install backend dependencies:
-
-```bash
-cd backend
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
-
-Run the FastAPI server:
-
-```bash
-uvicorn main:app --reload --port 8000
-```
-
-Which will be available at:
-
-```txt
-http://127.0.0.1:8000
-http://127.0.0.1:8000/docs
-```
-
-## Docker
-
-Run the frontend and backend together:
-
-```bash
-docker compose up --build
-```
-
-The combined site is available through Nginx at:
-
-```txt
-http://localhost/
-http://localhost/#data
-http://localhost/#future
-```
-
-Nginx proxies backend requests under `/api`, so the health check is available at:
-
-```txt
-http://localhost/api/health
-```
-
-For local debugging, the directly exposed services remain available at `http://localhost:3000` (frontend) and `http://localhost:8000` (backend).
-
-## API Endpoints
-
-```txt
+```text
 GET /api/health
 GET /api/referees
 GET /api/seasons
@@ -123,6 +114,26 @@ GET /api/metrics/outliers
 GET /api/metrics/consistency
 ```
 
-## Data
+## Data and media attribution
 
-The data aggregated and used in this project is sourced from NBAstuffer.com. The stored CSV data is located in `data/raw/`. The backend reads this CSV and calculates derived metrics via service functions. The frontend treats the backend API as the source of truth for referee rows, filters, summary metrics, and conclusion graph data.
+### Referee statistics
+
+The referee-statistics CSV is aggregated from [NBAstuffer](https://www.nbastuffer.com/). NBA Ref Analytics stores a project-specific copy for reproducibility and derives its own metrics from it. NBAstuffer, the NBA, and their respective data providers are not affiliated with or responsible for this project. Use of the source data remains subject to the source provider's terms and any applicable rights.
+
+### Video sources
+
+The selected clips are included solely to provide public-media context for the statistical discussion. Each clip remains the property of its original copyright holder and publisher. Sources:
+
+- [WhistleRate logo video](https://www.youtube.com/watch?v=XprPDXWR1Js)
+- [Brunson no-call, 2025–26](https://www.youtube.com/watch?v=CQ0mETrhYmI)
+- [Booker playoff technical, 2025–26](https://www.youtube.com/watch?v=vCwhwUSsbMM)
+- [Horford call review](https://www.youtube.com/watch?v=LJqZf7H5M6s)
+- [Brown no-call](https://youtu.be/EV1KC_ipRuM?si=iQVS2fCIvoymq9LG)
+- [LeBron no-call](https://youtu.be/nLsUFOlsRlU?si=M7OSU7eYf5LOghax)
+- [SGA no-call](https://youtu.be/k93xvbm-NVk?si=6TII2Cf_L7C0dvVK)
+
+This repository does not claim ownership of third-party NBA footage, broadcasts, or YouTube uploads. If you are a rights holder and would like material removed, please open an issue or contact the repository owner.
+
+## License
+
+Unless noted otherwise, the original source code in this repository is available under the [MIT License](LICENSE). Third-party data and media are excluded from that license and remain subject to their respective owners' terms and rights.
