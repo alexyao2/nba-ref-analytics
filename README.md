@@ -7,8 +7,6 @@
 
 NBA Ref Analytics ("WhistleRate") is a full-stack data application for exploring NBA referee trends across seasons. It examines foul differential, home-team indicators, referee consistency, and statistical outliers using publicly available referee statistics.
 
-> **Important:** The results are statistical indicators for further review—not evidence of referee bias, game manipulation, or intent.
-
 | Intro and film-review context | Interactive data dashboard |
 | --- | --- |
 | ![WhistleRate introduction page](docs/screenshots/intro.png) | ![WhistleRate data dashboard](docs/screenshots/dashboard.png) |
@@ -17,22 +15,13 @@ NBA Ref Analytics ("WhistleRate") is a full-stack data application for exploring
 | --- |
 | ![WhistleRate conclusions page](docs/screenshots/conclusions.png) |
 
-## What I built
+## About the Website
 
 - A **React + Vite** single-page interface with an evidence-board introduction, filterable dashboard, charts, referee records, and an interactive conclusion view.
 - A **FastAPI** backend that owns CSV parsing, filtering, aggregation, and metric calculation—keeping the frontend focused on presentation.
 - A reproducible **Docker Compose** environment with separate frontend and backend services, plus **Nginx** routing API requests under `/api`.
 - Backend unit tests for referee filtering and analytical metric services, run in GitHub Actions before deployment.
 - A small data pipeline that converts the stored NBA referee-statistics CSV into API responses for overview metrics, foul-differential leaders, outlier analysis, consistency analysis, and a home-bias index.
-
-## Engineering decisions
-
-| Decision | Why it matters |
-| --- | --- |
-| Backend as the source of truth | Derived statistics are calculated once in FastAPI instead of being reimplemented inconsistently in the browser. |
-| Service-layer analytics | Metric and filtering logic is isolated from HTTP routes, making it directly testable and easier to extend. |
-| Docker + Nginx | The app can be started consistently as a multi-service stack, while Nginx exposes one browser-facing origin and proxies `/api` requests. |
-| Transparent interpretation | The interface and documentation frame results as signals for deeper, game-level analysis rather than claims of bias. |
 
 ## Features
 
@@ -127,10 +116,10 @@ The selected clips are included solely to provide public-media context for the s
 - [WhistleRate logo video](https://www.youtube.com/watch?v=XprPDXWR1Js)
 - [Brunson no-call, 2025–26](https://www.youtube.com/watch?v=CQ0mETrhYmI)
 - [Booker playoff technical, 2025–26](https://www.youtube.com/watch?v=vCwhwUSsbMM)
-- [Horford call review](https://www.youtube.com/watch?v=LJqZf7H5M6s)
-- [Brown no-call](https://youtu.be/EV1KC_ipRuM?si=iQVS2fCIvoymq9LG)
-- [LeBron no-call](https://youtu.be/nLsUFOlsRlU?si=M7OSU7eYf5LOghax)
-- [SGA no-call](https://youtu.be/k93xvbm-NVk?si=6TII2Cf_L7C0dvVK)
+- [Horford call review, 2025-26](https://www.youtube.com/watch?v=LJqZf7H5M6s)
+- [Brown no-call, 2025-26](https://youtu.be/EV1KC_ipRuM?si=iQVS2fCIvoymq9LG)
+- [LeBron no-call, 2022-23](https://youtu.be/nLsUFOlsRlU?si=M7OSU7eYf5LOghax)
+- [SGA no-call, 2025-26](https://youtu.be/k93xvbm-NVk?si=6TII2Cf_L7C0dvVK)
 
 This repository does not claim ownership of third-party NBA footage, broadcasts, or YouTube uploads. If you are a rights holder and would like material removed, please open an issue or contact the repository owner.
 
